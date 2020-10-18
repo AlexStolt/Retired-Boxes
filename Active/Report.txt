@@ -70,7 +70,7 @@ python3 GetUserSPNs.py -dc-ip 10.10.10.100 -request active.htb/SVC_TGS:GPPstillS
 |
 |___[ERROR]: KRB_AP_ERR_SKEW(Clock skew too great)
     |
-    |___[SOLUTION]: Windows....
+    |___[SOLUTION]: Synchronizing Clock or Enumeratin LDAP with Windows....
 
 
 
