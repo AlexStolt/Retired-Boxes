@@ -1,3 +1,3 @@
 # Retired-Boxes
 ## Available Reports
-* Active (SMB, LDAP, KERBEROS, GPP)
+* Active (SMB, LDAP, KERBEROS, HASHCAT, GPP)
