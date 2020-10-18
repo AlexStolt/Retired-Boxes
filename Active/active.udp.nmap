@@ -1,0 +1,50 @@
+# Nmap 7.91 scan initiated Wed Oct 14 10:57:04 2020 as: nmap -sC -sV -sU -oN active.udp.nmap 10.10.10.100
+Nmap scan report for 10.10.10.100
+Host is up (0.058s latency).
+Not shown: 982 closed ports
+PORT      STATE         SERVICE      VERSION
+53/udp    open          domain       Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+88/udp    open          kerberos-sec Microsoft Windows Kerberos (server time: 2020-10-14 11:21:57Z)
+123/udp   open          ntp          NTP v3
+| ntp-info: 
+|_  
+137/udp   open|filtered netbios-ns
+138/udp   open|filtered netbios-dgm
+389/udp   open|filtered ldap
+464/udp   open|filtered kpasswd5
+500/udp   open|filtered isakmp
+4500/udp  open|filtered nat-t-ike
+5355/udp  open|filtered llmnr
+54711/udp open          domain       Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+54807/udp open          domain       Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+54925/udp open          domain       Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+55043/udp open          domain       Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+55544/udp open          domain       Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+55587/udp open          domain       Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+56141/udp open          domain       Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+57172/udp open          domain       Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: 3h04m34s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Wed Oct 14 11:20:44 2020 -- 1 IP address (1 host up) scanned in 1420.46 seconds
