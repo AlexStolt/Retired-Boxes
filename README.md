@@ -2,8 +2,11 @@
 ## Available Reports
 * Active (**SMB**, **LDAP**, **KERBEROS**, **HASHCAT**, **GPP**)
 * Shocker (**SHELLSHOCK**, **Perl** and **Bash** Reverse Shell, **LinEnum**, **TTY** Shells)
+* Bashed (**PHPBASH**, **Python Reverse Shells**)
 
 ## Cheat Sheet
+### General
+[Reverse Shells](http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet)
 ### Windows
 **Port 139**: SMB originally ran on top of **NetBIOS** using port 139. NetBIOS is an older transport layer that allows Windows computers to talk to each other on the same network.
 
