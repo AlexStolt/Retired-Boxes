@@ -3,6 +3,7 @@
 * Active (**SMB**, **LDAP**, **KERBEROS**, **HASHCAT**, **GPP**)
 * Shocker (**SHELLSHOCK**, **Perl** and **Bash** Reverse Shell, **LinEnum**, **TTY** Shells)
 * Bashed (**PHPBASH**, **Python Reverse Shells**)
+* OpenAdmin (**SSH Port Forwarding**, **LinPEAS Privilege Escalation**)
 
 ## Cheat Sheet
 ### General
